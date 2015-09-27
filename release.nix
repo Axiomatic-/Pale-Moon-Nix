@@ -1,4 +1,4 @@
-{ gecko ? { outPath = ./Pale-Moon /* Specify this on the command line if using nix-build. */; revCount = 1234; shortRev = "abcdef"; }
+{ goanna ? { outPath = ./Pale-Moon /* Specify this on the command line if using nix-build. */; revCount = 1234; shortRev = "abcdef"; }
 , officialRelease ? false
 }:
 
@@ -96,32 +96,29 @@ let
     build = forEachSystem (forEachCompiler (pkgs: with pkgs;
 
       stdenv.mkDerivation {
-        name = "firefox";
-        src = if lib.inNixShell then null else gecko;
+        name = "Pale_Moon";
+        src = if lib.inNixShell then null else goanna;
 
         buildInputs = [
-          # Expected by "mach"
-          python which autoconf213
-
-          # Expected by the configure script
-          perl unzip zip gnumake yasm pkgconfig
-
-          xlibs.libICE xlibs.libSM xlibs.libX11 xlibs.libXau xlibs.libxcb
-          xlibs.libXdmcp xlibs.libXext xlibs.libXt xlibs.printproto
-          xlibs.renderproto xlibs.xextproto xlibs.xproto xlibs.libXcomposite
-          xlibs.compositeproto xlibs.libXfixes xlibs.fixesproto
-          xlibs.damageproto xlibs.libXdamage xlibs.libXrender xlibs.kbproto
-
-          gnome.libart_lgpl gnome.libbonobo gnome.libbonoboui
-          gnome.libgnome gnome.libgnomecanvas gnome.libgnomeui
-          gnome.libIDL
-
-          gtkLibs.pango
-
-          dbus dbus_glib
-
-          alsaLib libpulseaudio
-          gstreamer gst_plugins_base
+          alsaLib 
+          bzip2 
+          cairo dbus 
+          dbus_glib 
+          file fontconfig freetype 
+          gst_plugins_base gstreamer gtk 
+          hunspell 
+          icu 
+          libevent libjpeg libnotify libstartup_notification libvpx 
+          makeWrapper mesa 
+          nspr nss 
+          pango perl pkgconfig python 
+          sqlite 
+          unzip 
+          xlibs.libX11 xlibs.libXext xlibs.libXft xlibs.libXi 
+          xlibs.libXrender xlibs.libXScrnSaver xlibs.libXt 
+          xlibs.pixman xlibs.scrnsaverproto xlibs.xextproto 
+          yasm 
+          zip zlib
         ] ++ lib.optionals lib.inNixShell [
           valgrind
         ];
